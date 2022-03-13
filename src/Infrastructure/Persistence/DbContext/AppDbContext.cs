@@ -1,5 +1,6 @@
 ﻿namespace Persistance.DbContext
 {
+    using Domain.Entities;
     using Microsoft.EntityFrameworkCore;
     using Persistance.Configuration;
 
@@ -15,5 +16,8 @@
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
         }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

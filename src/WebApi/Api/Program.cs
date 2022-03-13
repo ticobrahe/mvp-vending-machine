@@ -12,6 +12,7 @@ builder.Services.AddPersistance(builder.Configuration);
 builder.Services.AddAuthentication();
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
+builder.Services.ConfigureSwagger();
 builder.Services.AddControllers()
     .AddXmlDataContractSerializerFormatters();
 builder.Services.ConfigureMvc();

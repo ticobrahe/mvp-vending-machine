@@ -1,9 +1,12 @@
-﻿using Common.General;
+﻿using Application.Validators.UserValidator;
+using Common.General;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Persistance.DbContext;
 using System.Text;
@@ -58,43 +61,49 @@ namespace API.Extensions
                 .ConfigureApiBehaviorOptions(o =>
                 {
                     o.InvalidModelStateResponseFactory = context => new ValidationFailedResult(context.ModelState);
-                });//.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UserValidator>());
+                }).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AddUserCommandValidator>());
         }
 
 
-        
-        //public static void ConfigureSwagger(this IServiceCollection services)
-        //{
-        //    services.AddSwaggerGen(c =>
-        //    {
-        //        c.OperationFilter<RemoveVersionFromParameter>();
-        //        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-        //        {
-        //            Name = "Authorization",
-        //            Type = SecuritySchemeType.ApiKey,
-        //            Scheme = "Bearer",
-        //            BearerFormat = "JWT",
-        //            In = ParameterLocation.Header,
-        //            Description = "JWT Authorization header using the Bearer scheme."
-        //        });
 
-        //        c.AddSecurityRequirement(new OpenApiSecurityRequirement
-        //        {
-        //            {
-        //                  new OpenApiSecurityScheme
-        //                    {
-        //                        Reference = new OpenApiReference
-        //                        {
-        //                            Type = ReferenceType.SecurityScheme,
-        //                            Id = "Bearer"
-        //                        }
-        //                    },
-        //                    new string[] {}
-        //            }
-        //        });
-        //    });
-        //}
-        
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Vendor Machine API",
+                    Description = "Endpoints for Vendor machine"
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id   = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
+        }
+
     }
     public class ValidationError
     {
