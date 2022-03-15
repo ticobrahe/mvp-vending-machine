@@ -35,7 +35,7 @@ namespace Persistance.Jwt
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
 
-            var securityToken = tokenHandler.CreateJwtSecurityToken(descriptor);
+            var securityToken = tokenHandler.CreateToken(descriptor);
 
             return new UserAccessToken(securityToken);
         }

@@ -5,6 +5,6 @@ namespace Application.Command.Product
 {
     public class DeleteProductCommand: IRequest<Unit>
     {
-        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
     }
 }

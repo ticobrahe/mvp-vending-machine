@@ -8,7 +8,7 @@ namespace Application.Command.Product
     public class UpdateProductCommand: IRequest<SuccessResponse<UpdateProductCommandResponse>>
     {
         [JsonIgnore]
-        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
         public string Name { get; set; }
         public int AmountAvailable { get; set; }
         public decimal Cost { get; set; }

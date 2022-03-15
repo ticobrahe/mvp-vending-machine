@@ -19,7 +19,7 @@ namespace Persistence.CommandHandlers.Product
         }
         public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.ProductId);
 
             if (product == null)
             {

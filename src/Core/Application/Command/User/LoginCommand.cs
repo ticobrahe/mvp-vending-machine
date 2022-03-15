@@ -18,6 +18,8 @@ namespace Application.Command.User
     {
         public Guid Id { get; set; }
         public string AccessToken { get; set; }
+        public int ExpiresIn { get; set; }
+        public string Role { get; set; }
 
     }
 }

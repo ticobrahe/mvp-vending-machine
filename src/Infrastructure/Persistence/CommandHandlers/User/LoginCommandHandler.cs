@@ -48,7 +48,9 @@ namespace Persistence.CommandHandlers.User
            var response = new LoginResponse
            {
                Id = user.Id,
-               AccessToken = userAccessToken.AccessToken
+               AccessToken = userAccessToken.AccessToken,
+               Role = user.Role,
+               ExpiresIn = userAccessToken.ExpiresIn
            };
            return new SuccessResponse<LoginResponse> { Data = response, Message = "Login successfully" };
         }

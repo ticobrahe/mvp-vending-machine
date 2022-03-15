@@ -17,7 +17,7 @@ namespace Persistence.CommandHandlers.Product
         }
         public async Task<SuccessResponse<UpdateProductCommandResponse>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == request.ProductId);
 
             if (product == null)
             {
@@ -36,6 +36,7 @@ namespace Persistence.CommandHandlers.Product
                 Name = product.Name,
                 AmountAvailable = product.AmountAvailable
             };
+
             return new SuccessResponse<UpdateProductCommandResponse> { Data = response, Message = "Product updated successfully" };
         }
     }

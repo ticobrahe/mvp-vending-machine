@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Common.General;
 using MediatR;
@@ -10,10 +11,11 @@ namespace Application.Command.Product
 {
     public class AddProductCommand: IRequest<SuccessResponse<AddProductCommandResponse>>
     {
+        [JsonIgnore]
+        public Guid SellerId { get; set; }
         public string Name { get; set; }
         public int AmountAvailable { get; set; } 
         public decimal Cost { get; set; }
-        public Guid Seller { get; set; }
     }
 
     public class AddProductCommandResponse

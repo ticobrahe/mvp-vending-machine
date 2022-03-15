@@ -24,18 +24,14 @@ namespace Persistence.CommandHandlers.Product
         }
         public async Task<SuccessResponse<AddProductCommandResponse>> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
-            var seller = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.Seller && x.Role == ERole.Seller.ToString());
-            if (seller == null)
-            {
-                throw new RestException(HttpStatusCode.BadRequest, "Seller not found");
-            }
+            var seller = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.SellerId);
 
             var product = new Domain.Entities.Product
             {
                 AmountAvailable = request.AmountAvailable,
                 Cost = request.Cost,
                 Name = request.Name,
-                SellerId = request.Seller
+                SellerId = request.SellerId
             };
 
             await _context.AddAsync(product);

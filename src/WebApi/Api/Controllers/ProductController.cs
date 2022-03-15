@@ -1,6 +1,7 @@
 ﻿using Application.Command.Product;
 using Application.Query.Product;
 using Common.General;
+using Common.Helper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +25,14 @@ namespace Api.Controllers
         /// Add a new product.
         /// </summary>
         /// <param name="command"></param>
+        [Authorize(Roles = Role.Seller)]
         [Produces("application/json")]
         [ProducesResponseType(typeof(SuccessResponse<AddProductCommandResponse>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(SuccessResponse<>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.BadRequest)]
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] AddProductCommand command)
         {
+            command.SellerId = User.GetUserId();
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -38,10 +41,9 @@ namespace Api.Controllers
         /// Get a product by Id
         /// </summary>
         /// <param name="id"></param>
-        [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(typeof(SuccessResponse<GetProductByIdQueryResponse>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(SuccessResponse<>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.NotFound)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
@@ -58,13 +60,14 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="command"></param>
+        [Authorize(Roles = Role.Seller)]
         [Produces("application/json")]
         [ProducesResponseType(typeof(SuccessResponse<UpdateProductCommandResponse>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(SuccessResponse<>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.NotFound)]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command)
         {
-            command.Id = id;
+            command.ProductId = id;
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -73,14 +76,15 @@ namespace Api.Controllers
         /// Delete a product
         /// </summary>
         /// <param name="id"></param>
+        [Authorize(Roles = Role.Seller)]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(SuccessResponse<>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.NotFound)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             var command = new DeleteProductCommand
             {
-                Id = id
+                ProductId = id
             };
             await _mediator.Send(command);
             return NoContent();
