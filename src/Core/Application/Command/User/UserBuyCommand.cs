@@ -20,7 +20,7 @@ namespace Application.Command.User
     public class UserBuyCommandResponse
     {
         public decimal AmountSpent { get; set; }
-        public decimal Change { get; set; }
+        public decimal[] Change { get; set; }
         public string ProductName { get; set; }
     }
 }

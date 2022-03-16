@@ -9,7 +9,9 @@ namespace Application.Command.Product
     {
         [JsonIgnore]
         public Guid ProductId { get; set; }
-        public string Name { get; set; }
+        [JsonIgnore]
+        public Guid UserId { get; set; }
+        public string ProductName { get; set; }
         public int AmountAvailable { get; set; }
         public decimal Cost { get; set; }
     }
@@ -17,7 +19,7 @@ namespace Application.Command.Product
     public class UpdateProductCommandResponse
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string ProductName { get; set; }
         public int AmountAvailable { get; set; }
         public decimal Cost { get; set; }
     }

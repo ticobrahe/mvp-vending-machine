@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Common.Helper;
+using Application;
 
 namespace Api.Controllers
 {
@@ -15,7 +16,6 @@ namespace Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
-
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
@@ -40,7 +40,6 @@ namespace Api.Controllers
         /// Get a user by Id
         /// </summary>
         /// <param name="id"></param>
-        [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(typeof(SuccessResponse<GetUserQueryByIdResponse>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.NotFound)]
@@ -62,10 +61,10 @@ namespace Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(SuccessResponse<UpdateUserCommandResponse>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(BaseResponse), (int)HttpStatusCode.NotFound)]
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserCommand command)
         {
-            command.Id = id;
+            command.UserId = User.GetUserId();
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -97,7 +96,7 @@ namespace Api.Controllers
         [HttpPost("deposit")]
         public async Task<IActionResult> UserDeposit([FromBody] UserDepositCommand command)
         {
-            command.Id = User.GetUserId();
+            command.UserId = User.GetUserId();
             var response = await _mediator.Send(command);
             return Ok(response);
         }

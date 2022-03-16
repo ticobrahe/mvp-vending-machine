@@ -23,7 +23,7 @@ namespace Persistence.CommandHandlers.User
         }
         public async Task<SuccessResponse<UserDepositCommandResponse>> Handle(UserDepositCommand request, CancellationToken cancellationToken)
         {
-            var buyer = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var buyer = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
             buyer.Deposit += request.Deposit;
             await _context.SaveChangesAsync(cancellationToken);
 

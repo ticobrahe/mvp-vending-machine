@@ -24,12 +24,12 @@ namespace Persistence.QueryHandlers.Product
         }
         public async Task<SuccessResponse<GetProductByIdQueryResponse>> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await  _context.Products.Where(x => x.Id == request.Id).Select(x => new GetProductByIdQueryResponse
+            var product = await  _context.Products.Where(x => x.Id == request.ProductId).Select(x => new GetProductByIdQueryResponse
             {
                 Id = x.Id,
                 AmountAvailable = x.AmountAvailable,
                 Cost = x.Cost,
-                Name = x.Name,
+                Name = x.ProductName,
                 Seller = new SellerDto
                 {
                     Id = x.Seller.Id,

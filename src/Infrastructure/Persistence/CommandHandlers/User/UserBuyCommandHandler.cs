@@ -1,5 +1,6 @@
 ﻿using Application.Command.User;
 using Common.General;
+using Common.Helper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistance.DbContext;
@@ -25,7 +26,7 @@ namespace Persistence.CommandHandlers.User
 
             if (totalPrice > buyer.Deposit)
             {
-                throw new RestException(HttpStatusCode.BadRequest, "Deposit not sufficient to buy the product");
+                throw new RestException(HttpStatusCode.BadRequest, "Insufficient deposit");
             }
 
             product.AmountAvailable -= request.Amount;
@@ -35,8 +36,8 @@ namespace Persistence.CommandHandlers.User
             var response = new UserBuyCommandResponse
             {
                 AmountSpent = totalPrice,
-                Change = buyer.Deposit,
-                ProductName = product.Name
+                Change = ChangeCalculator.GetChange(buyer.Deposit),
+                ProductName = product.ProductName
             };
 
             return new SuccessResponse<UserBuyCommandResponse> { Data = response, Message = "Product purchased successfully" };
@@ -56,7 +57,7 @@ namespace Persistence.CommandHandlers.User
 
             if (amount > product.AmountAvailable)
             {
-                throw new RestException(HttpStatusCode.BadRequest, $"Amount is more than product amount available {product.AmountAvailable}");
+                throw new RestException(HttpStatusCode.BadRequest, $"Amount requested is more than amount available({product.AmountAvailable})");
             }
         }
     }

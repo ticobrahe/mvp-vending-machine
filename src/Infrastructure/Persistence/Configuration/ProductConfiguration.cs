@@ -8,7 +8,7 @@ namespace Persistence.Configuration
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.ProductName).IsRequired();
             builder.Property(x => x.Cost).HasPrecision(16,2);
         }
     }

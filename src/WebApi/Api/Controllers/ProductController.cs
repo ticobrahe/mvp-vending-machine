@@ -49,7 +49,7 @@ namespace Api.Controllers
         {
             var query = new GetProductByIdQuery
             {
-                Id = id
+                ProductId = id
             };
             var response = await _mediator.Send(query);
             return Ok(response);
@@ -68,6 +68,7 @@ namespace Api.Controllers
         public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] UpdateProductCommand command)
         {
             command.ProductId = id;
+            command.UserId = User.GetUserId();
             var response = await _mediator.Send(command);
             return Ok(response);
         }
@@ -84,7 +85,8 @@ namespace Api.Controllers
         {
             var command = new DeleteProductCommand
             {
-                ProductId = id
+                ProductId = id,
+                UserId = User.GetUserId()
             };
             await _mediator.Send(command);
             return NoContent();

@@ -7,7 +7,7 @@ namespace Application.Query.Product
 {
     public class GetProductByIdQuery: IRequest<SuccessResponse<GetProductByIdQueryResponse>>
     {
-        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
     }
 
     public class GetProductByIdQueryResponse

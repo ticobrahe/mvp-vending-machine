@@ -12,7 +12,7 @@ namespace Application.Command.User
     public class UserDepositCommand: IRequest<SuccessResponse<UserDepositCommandResponse>>
     {
         [JsonIgnore]
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public decimal Deposit { get; set; }
     }
 

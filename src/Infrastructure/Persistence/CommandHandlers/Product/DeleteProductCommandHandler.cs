@@ -26,6 +26,11 @@ namespace Persistence.CommandHandlers.Product
                 throw new RestException(HttpStatusCode.NotFound, "Product not found");
             }
 
+            if (product.SellerId != request.UserId)
+            {
+                throw new RestException(HttpStatusCode.Forbidden, "Forbidden");
+            }
+
             _context.Remove(product);
             await _context.SaveChangesAsync(cancellationToken);
             return Unit.Value;

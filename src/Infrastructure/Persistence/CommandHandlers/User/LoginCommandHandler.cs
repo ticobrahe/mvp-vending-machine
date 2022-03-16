@@ -23,10 +23,11 @@ namespace Persistence.CommandHandlers.User
         }
         public async Task<SuccessResponse<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            var userName = request.UserName.ToLower();
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null)
             {
-                throw new RestException(HttpStatusCode.BadRequest, "User not found");
+                throw new RestException(HttpStatusCode.BadRequest, "Wrong userName or password");
             }
 
             var isUserValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);

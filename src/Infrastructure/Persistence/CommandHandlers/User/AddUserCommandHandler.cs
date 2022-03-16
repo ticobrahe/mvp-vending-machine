@@ -15,10 +15,11 @@ namespace Persistence.CommandHandlers.User
         }
         public async Task<SuccessResponse<AddUserCommandResponse>> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            var userExists = _context.Users.Any(x => x.UserName == request.UserName);
+            var userName = request.UserName.ToLower();
+            var userExists = _context.Users.Any(x => x.UserName.ToLower() == userName);
             if (userExists)
             {
-                throw new RestException(HttpStatusCode.Unauthorized, "User already exists");
+                throw new RestException(HttpStatusCode.BadRequest, "User already exists");
             }
 
             var user = new Domain.Entities.User

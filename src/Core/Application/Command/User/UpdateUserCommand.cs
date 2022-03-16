@@ -7,8 +7,9 @@ namespace Application.Command.User
     public class UpdateUserCommand: IRequest<SuccessResponse<UpdateUserCommandResponse>>
     {
         [JsonIgnore]
-        public Guid Id { get; set; }
-        public string Password { get; set; }
+        public Guid UserId { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 
     public class UpdateUserCommandResponse

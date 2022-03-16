@@ -9,7 +9,7 @@ namespace Application.Validators.ProductValidator
         {
             RuleFor(x => x.Cost).GreaterThan(0).Must(x => x % 5 == 0).WithMessage("Cost should be multiple of 5");
             RuleFor(x => x.AmountAvailable).GreaterThan(0);
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.ProductName).NotEmpty();
         }
     }
 }

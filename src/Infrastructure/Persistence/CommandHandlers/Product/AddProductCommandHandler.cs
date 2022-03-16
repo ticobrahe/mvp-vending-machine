@@ -30,7 +30,7 @@ namespace Persistence.CommandHandlers.Product
             {
                 AmountAvailable = request.AmountAvailable,
                 Cost = request.Cost,
-                Name = request.Name,
+                ProductName = request.ProductName,
                 SellerId = request.SellerId
             };
 
@@ -40,7 +40,7 @@ namespace Persistence.CommandHandlers.Product
             var response = new AddProductCommandResponse
             {
                 Id = product.Id,
-                Name = product.Name,
+                ProductName = product.ProductName,
                 AmountAvailable = product.AmountAvailable,
                 Cost = product.Cost,
                 Seller = new SellerDto

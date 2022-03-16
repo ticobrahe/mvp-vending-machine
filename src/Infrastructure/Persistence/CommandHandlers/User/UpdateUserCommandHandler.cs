@@ -17,14 +17,15 @@ namespace Persistence.CommandHandlers.User
         }
         public async Task<SuccessResponse<UpdateUserCommandResponse>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
 
-            if (user == null)
+            var isUserValid = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
+            if (!isUserValid)
             {
-                throw new RestException(HttpStatusCode.NotFound, "User not found");
+                throw new RestException(HttpStatusCode.BadRequest, "Wrong password");
             }
 
-            user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
             await _context.SaveChangesAsync(cancellationToken);
 
             var response = new UpdateUserCommandResponse

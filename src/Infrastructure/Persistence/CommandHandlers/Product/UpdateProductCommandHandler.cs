@@ -24,7 +24,7 @@ namespace Persistence.CommandHandlers.Product
                 throw new RestException(HttpStatusCode.NotFound, "Product not found");
             }
 
-            product.Name = request.Name;
+            product.ProductName = request.ProductName;
             product.AmountAvailable = request.AmountAvailable;
             product.Cost = request.Cost;
 
@@ -33,7 +33,7 @@ namespace Persistence.CommandHandlers.Product
             {
                 Id = product.Id,
                 Cost = product.Cost,
-                Name = product.Name,
+                ProductName = product.ProductName,
                 AmountAvailable = product.AmountAvailable
             };
 
